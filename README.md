@@ -14,7 +14,7 @@ This will be added later.
 
 ## Contact
 Please feel free to reach me via:
- * [twitter]([https://link](https://twitter.com/EddieLewis_92)) 
+ * [twitter](https://twitter.com/EddieLewis_92) 
  * [email](eddie.thinhle@outlook.com)
  * [linkedIn](https://www.linkedin.com/in/thinhle-eddie/)
   
