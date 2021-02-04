@@ -1,11 +1,18 @@
-import React from 'react'
+// import React from 'react'
 
-const ClockTab: React.FC = () => {
-  return (
-    <div>
-      <h1>Clocks will be put here</h1>
-    </div>
-  )
-}
+import LongBreakClock from "../LongBreakClock";
+import ShorkBreakClock from "../ShortBreakClock";
+import WorkClock from "../WorkClock";
 
-export default ClockTab
+const ClockTabs: React.FC = () => {
+	return (
+		<div>
+			<h1>Clocks will be put here</h1>
+			<WorkClock />
+			<ShorkBreakClock />
+			<LongBreakClock />
+		</div>
+	);
+};
+
+export default ClockTabs;
