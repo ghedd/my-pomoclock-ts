@@ -1,17 +1,21 @@
 import { useState, useEffect } from "react";
 
-const useCountdownTimer = ( isRunning: boolean, isReset = false, duration: number ) => {
+const useCountdownTimer = ( isRunning: boolean, isReset = false, duration: number, isDone: boolean ) => {
   const DEFAULT_POM = 25;
 
   const [minute, setMinute] = useState( duration || DEFAULT_POM );
   const [second, setSecond] = useState( 0 );
 
+
   useEffect( () => {
-    setMinute( duration );
+    if ( isDone ) {
+      return setMinute( duration );
+    }
+
     return () => {
       setMinute( 0 )
     }
-  }, [duration] )
+  }, [duration, isDone] )
 
   useEffect( () => {
     let timer: any;
@@ -22,17 +26,18 @@ const useCountdownTimer = ( isRunning: boolean, isReset = false, duration: numbe
           setSecond( 59 );
           setMinute( minute - 1 );
         }
-        if ( ( second === 0 && minute === 0 ) ) {
-          setSecond( 0 );
-          setMinute( duration || DEFAULT_POM )
-        }
+        /*  if ( ( second === 0 && minute === 0 ) ) {
+           setSecond( 0 );
+           // setMinute( duration || DEFAULT_POM )
+         } */
 
       }, 1000 )
     }
     if ( isReset ) {
       setSecond( 0 );
-      setMinute( duration || DEFAULT_POM )
+      setMinute( duration )
     }
+
     return () => {
       clearInterval( timer );
     }

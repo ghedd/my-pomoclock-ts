@@ -1,35 +1,96 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import useCountdownTimer from "../../hooks/useCountdownTimer";
+import useDesktopNotifications from "../../hooks/useDesktopNotifications";
+
+// import useDesktopNotifications from "../../hooks/useDesktopNotifications";
 import { parseTimeNum } from "../../utils/Functions";
 
 const WorkClock: React.FC = () => {
 	const [currentClock, setCurrentClock] = useState("work");
-	const [duration, setDuration] = useState(0);
+	const [duration, setDuration] = useState(1);
 	const [isRunning, setRunning] = useState(false);
+	const [intervalCount, setCount] = useState(1);
+	const [isDone, setDone] = useState(false);
 	const [isReset, setReset] = useState(false);
-	const { minute, second } = useCountdownTimer(isRunning, isReset, duration);
 
-	const selectClock = (clockType: string) => {
-		setCurrentClock(clockType);
-		setReset(true);
-	};
+	const { minute, second } = useCountdownTimer(
+		isRunning,
+		isReset,
+		duration,
+		isDone
+	);
 
-	/* ---------- update clock type ---------- */
+	const { dispatchMsg } = useDesktopNotifications();
+
+	const prevClockRef = useRef(currentClock);
+	const prevClock = prevClockRef.current;
+	useEffect(() => {
+		prevClockRef.current = currentClock;
+		console.log(intervalCount > 0 && intervalCount % 2 === 0);
+		if (prevClock === "work" && isDone) {
+			setCount((intervalCount) => intervalCount + 1);
+		}
+	}, [currentClock, isDone, intervalCount, prevClock]);
+
+	// TODO:
+	// [] switch clock when time's up
+	useEffect(() => {
+		dispatchMsg(intervalCount.toString());
+	}, [intervalCount, dispatchMsg]);
 
 	useEffect(() => {
+		console.log("done? ", isDone);
+		if (isDone) {
+			if (
+				intervalCount > 0 &&
+				intervalCount % 2 === 0 &&
+				prevClock === "work"
+			) {
+				setDuration(1);
+				setDone(false);
+				setCurrentClock("long-break");
+				dispatchMsg("Time to have a long break");
+			} else if (currentClock === "work") {
+				setDuration(1);
+				setDone(false);
+				setCurrentClock("short-break");
+				dispatchMsg("Time to have a short break");
+			} else {
+				setCurrentClock("work");
+				setDuration(1);
+				setDone(false);
+				dispatchMsg("Time to work");
+			}
+			/* if (currentClock === "short-break" || currentClock === "long-break") {
+		
+			} */
+		}
+		return () => {};
+	}, [isDone, dispatchMsg, currentClock, intervalCount, prevClock]);
+
+	const toggleClock = () => {
+		setRunning(!isRunning);
+		// setDone(false);
+	};
+	const selectClock = (clockType: string) => {
+		setReset(true);
 		switch (currentClock) {
 			case "work":
-				return setDuration(25);
+				setDuration(1);
+				setCurrentClock(clockType);
+				break;
 			case "long-break":
-				return setDuration(15);
+				setDuration(1);
+				setCurrentClock(clockType);
+				break;
 			case "short-break":
-				return setDuration(5);
+				setDuration(1);
+				setCurrentClock(clockType);
+				break;
 			default:
 				return setDuration(25);
 		}
-	}, [currentClock]);
-
-	/* -------- end: update clock type ------- */
+	};
 
 	/* ------------- reset clock ------------- */
 
@@ -42,6 +103,7 @@ const WorkClock: React.FC = () => {
 	useEffect(() => {
 		if (minute === 0 && second === 0) {
 			setRunning(false);
+			setDone(true);
 		}
 	}, [minute, second]);
 
@@ -50,7 +112,12 @@ const WorkClock: React.FC = () => {
 	return (
 		<div>
 			<div className="clocktab">
-				<button disabled={isRunning} onClick={() => selectClock("work")}>
+				<button
+					disabled={isRunning}
+					onClick={() => {
+						selectClock("work");
+					}}
+				>
 					work clock
 				</button>
 				<button disabled={isRunning} onClick={() => selectClock("long-break")}>
@@ -61,7 +128,7 @@ const WorkClock: React.FC = () => {
 				</button>
 			</div>
 			<h1>{currentClock}</h1>
-			<button onClick={() => setRunning(!isRunning)}>
+			<button onClick={() => toggleClock()}>
 				{isRunning ? "pause" : "run"}
 			</button>
 			<button
