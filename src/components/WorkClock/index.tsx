@@ -1,9 +1,10 @@
 import { useState, useEffect, useRef } from "react";
 import useCountdownTimer from "../../hooks/useCountdownTimer";
 import useDesktopNotifications from "../../hooks/useDesktopNotifications";
-
+import timesUpSound from "../../assets/audio/times-up.mp3";
 // import useDesktopNotifications from "../../hooks/useDesktopNotifications";
 import { parseTimeNum } from "../../utils/Functions";
+import { useAudio } from "../../hooks/useAudio";
 
 const WorkClock: React.FC = () => {
 	const [currentClock, setCurrentClock] = useState("work");
@@ -12,7 +13,7 @@ const WorkClock: React.FC = () => {
 	const [intervalCount, setCount] = useState(1);
 	const [isDone, setDone] = useState(false);
 	const [isReset, setReset] = useState(false);
-
+	const { playAudio } = useAudio(timesUpSound);
 	const { minute, second } = useCountdownTimer(
 		isRunning,
 		isReset,
@@ -41,6 +42,7 @@ const WorkClock: React.FC = () => {
 	useEffect(() => {
 		console.log("done? ", isDone);
 		if (isDone) {
+			playAudio();
 			if (
 				intervalCount > 0 &&
 				intervalCount % 2 === 0 &&
@@ -66,7 +68,7 @@ const WorkClock: React.FC = () => {
 			} */
 		}
 		return () => {};
-	}, [isDone, dispatchMsg, currentClock, intervalCount, prevClock]);
+	}, [isDone, dispatchMsg, currentClock, intervalCount, prevClock, playAudio]);
 
 	const toggleClock = () => {
 		setRunning(!isRunning);
