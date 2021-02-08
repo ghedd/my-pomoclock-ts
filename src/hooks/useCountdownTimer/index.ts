@@ -1,19 +1,30 @@
 import { useState, useEffect } from "react";
 
-const useCountdownTimer = ( isRunning: boolean, isReset = false, duration: number, isDone: boolean ) => {
+const useCountdownTimer = ( isPaused: boolean, duration: number, isReset = false, ) => {
   const DEFAULT_POM = 25;
-
+  const [isDone, setDone] = useState( false );
+  const [isRunning, setRunning] = useState( false );
   const [minute, setMinute] = useState( duration || DEFAULT_POM );
   const [second, setSecond] = useState( 0 );
 
+  useEffect( () => {
+    if ( isPaused ) {
+      setRunning( false );
+    } else {
+      setRunning( true )
+    }
+
+  }, [isPaused] )
 
   useEffect( () => {
     if ( isDone ) {
-      return setMinute( duration );
+      setRunning( false )
+      // return () => setMinute( duration );
     }
 
     return () => {
-      setMinute( 0 )
+      setMinute( duration )
+      setDone( false )
     }
   }, [duration, isDone] )
 
@@ -26,10 +37,11 @@ const useCountdownTimer = ( isRunning: boolean, isReset = false, duration: numbe
           setSecond( 59 );
           setMinute( minute - 1 );
         }
-        /*  if ( ( second === 0 && minute === 0 ) ) {
-           setSecond( 0 );
-           // setMinute( duration || DEFAULT_POM )
-         } */
+        if ( ( second === 0 && minute === 0 ) ) {
+          setSecond( 0 );
+          setDone( true )
+          // setMinute( duration || DEFAULT_POM )
+        }
 
       }, 1000 )
     }
@@ -43,7 +55,7 @@ const useCountdownTimer = ( isRunning: boolean, isReset = false, duration: numbe
     }
   }, [duration, isRunning, isReset, minute, second] )
 
-  return { isRunning, minute, second }
+  return { isRunning, minute, second, isDone }
 }
 
 export default useCountdownTimer

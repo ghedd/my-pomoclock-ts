@@ -15,7 +15,9 @@ export const useAudio = ( audioLink: string ) => {
   }, [isPlaying, audio] )
 
   useEffect( () => {
-    audio.addEventListener( "ended", () => setPlaying( false ) );
+    audio.addEventListener( "ended", () => {
+      setPlaying( false )
+    } );
     return () => {
       audio.removeEventListener( "ended", () => setPlaying( false ) )
     }
