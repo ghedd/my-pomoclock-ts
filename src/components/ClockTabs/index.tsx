@@ -26,7 +26,7 @@ const ClockTabs: React.FC = () => {
 	/* --------- NOTE: notifications --------- */
 	const { playAudio } = useAudio(timesUp);
 
-	const { dispatchMsg } = useDesktopNotifications();
+	const { dispatchMessage } = useDesktopNotifications();
 
 	const handleOnClockEnd = (done: boolean, cb: () => void) => {
 		cb();
@@ -36,14 +36,14 @@ const ClockTabs: React.FC = () => {
 	const autoSwitchClock = () => {
 		if (currentClock === clocks.workClock) {
 			if (workClockCount !== 0 && workClockCount % 2 === 0) {
-				dispatchMsg("Enjoy your long break!");
+				dispatchMessage("Enjoy your long break!");
 				setCurrentClock(clocks.longBreak);
 			} else {
 				setCurrentClock(clocks.shortBreak);
-				dispatchMsg("How about taking a short break?");
+				dispatchMessage("How about taking a short break?");
 			}
 		} else {
-			dispatchMsg("Just about time to get back to work!");
+			dispatchMessage("Just about time to get back to work!");
 			setCurrentClock(clocks.workClock);
 		}
 	};

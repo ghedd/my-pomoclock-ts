@@ -16,7 +16,7 @@ const WorkClock: React.FC = () => {
 	const { playAudio } = useAudio(timesUpSound);
 	const { minute, second } = useCountdownTimer(isRunning, duration);
 
-	const { dispatchMsg } = useDesktopNotifications();
+	const { dispatchMessage } = useDesktopNotifications();
 
 	const prevClockRef = useRef(currentClock);
 	const prevClock = prevClockRef.current;
@@ -31,8 +31,8 @@ const WorkClock: React.FC = () => {
 	// TODO:
 	// [] switch clock when time's up
 	useEffect(() => {
-		dispatchMsg(intervalCount.toString());
-	}, [intervalCount, dispatchMsg]);
+		dispatchMessage(intervalCount.toString());
+	}, [intervalCount, dispatchMessage]);
 
 	useEffect(() => {
 		console.log("done? ", isDone);
@@ -46,24 +46,31 @@ const WorkClock: React.FC = () => {
 				setDuration(1);
 				setDone(false);
 				setCurrentClock("long-break");
-				dispatchMsg("Time to have a long break");
+				dispatchMessage("Time to have a long break");
 			} else if (currentClock === "work") {
 				setDuration(1);
 				setDone(false);
 				setCurrentClock("short-break");
-				dispatchMsg("Time to have a short break");
+				dispatchMessage("Time to have a short break");
 			} else {
 				setCurrentClock("work");
 				setDuration(1);
 				setDone(false);
-				dispatchMsg("Time to work");
+				dispatchMessage("Time to work");
 			}
 			/* if (currentClock === "short-break" || currentClock === "long-break") {
 		
 			} */
 		}
 		return () => {};
-	}, [isDone, dispatchMsg, currentClock, intervalCount, prevClock, playAudio]);
+	}, [
+		isDone,
+		dispatchMessage,
+		currentClock,
+		intervalCount,
+		prevClock,
+		playAudio,
+	]);
 
 	const toggleClock = () => {
 		setRunning(!isRunning);
