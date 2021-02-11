@@ -1,3 +1,4 @@
+// @ts-nocheck
 /* eslint-disable no-restricted-globals */
 
 // install service worker
