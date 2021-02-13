@@ -2,7 +2,6 @@ import React, { useState, useEffect, useCallback } from "react";
 
 interface DesktopNotifications {
 	dispatchMessage: (message: string) => void;
-	handleClick?: () => void;
 }
 
 export const DesktopNotificationsCtx = React.createContext(

@@ -5,6 +5,7 @@ const useCountdownTimer = ( isPaused: boolean, duration: number, isReset = false
   const [isDone, setDone] = useState( false );
   const [isRunning, setRunning] = useState( false );
   const [minute, setMinute] = useState( duration || DEFAULT_POM );
+  const [secondOnly, setSecondOnly] = useState( minute * 60 )
   const [second, setSecond] = useState( 0 );
 
   useEffect( () => {
@@ -33,12 +34,14 @@ const useCountdownTimer = ( isPaused: boolean, duration: number, isReset = false
     if ( isRunning ) {
       timer = setInterval( () => {
         setSecond( second - 1 );
+        setSecondOnly( secondOnly => secondOnly - 1 )
         if ( second === 0 ) {
           setSecond( 59 );
           setMinute( minute - 1 );
         }
         if ( ( second === 0 && minute === 0 ) ) {
           setSecond( 0 );
+          setSecondOnly( 0 );
           setDone( true )
           // setMinute( duration || DEFAULT_POM )
         }
@@ -55,7 +58,7 @@ const useCountdownTimer = ( isPaused: boolean, duration: number, isReset = false
     }
   }, [duration, isRunning, isReset, minute, second] )
 
-  return { isRunning, minute, second, isDone }
+  return { isRunning, minute, second, secondOnly, isDone }
 }
 
 export default useCountdownTimer

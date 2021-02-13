@@ -2,48 +2,45 @@ import React from "react";
 import ClockTabs from "./components/ClockTabs";
 import { DesktopNotificationsProvider } from "./contexts/DesktopNotificationsCtx";
 
+/* ---------------- styles --------------- */
+import "./App.scss";
+import Container from "@material-ui/core/Container";
+import { createStyles, makeStyles } from "@material-ui/core";
+import { ThemeProvider, createMuiTheme } from "@material-ui/core/styles";
+
+
+const theme = createMuiTheme({
+	typography: {
+		fontFamily: `"Poppins", sans-serif`,
+	},
+});
+
+const useStyles = makeStyles(() =>
+	createStyles({
+		root: {
+			margin: "0 auto",
+		},
+		mainContainer: {
+			display: "grid",
+			placeItems: "center",
+			height: "calc(100% - 2rem)",
+			minHeight: "90vh",
+			width: "96vw",
+		},
+	})
+);
 const App = () => {
-	const notifyMe = () => {
-		// Let's check if the browser supports notifications
-		if (!("Notification" in window)) {
-			alert("This browser does not support desktop notification");
-		}
-
-		// Let's check whether notification permissions have already been granted
-		else if (Notification.permission === "granted") {
-			// If it's okay let's create a notification
-			navigator.serviceWorker.ready.then((reg) => {
-				reg.showNotification("HEY!!!", {
-					vibrate: [200, 100, 200],
-				});
-			});
-		}
-
-		// Otherwise, we need to ask the user for permission
-		else if (Notification.permission !== "denied") {
-			Notification.requestPermission().then(function (permission) {
-				// If the user accepts, let's create a notification
-				if (permission === "granted") {
-					navigator.serviceWorker.ready.then((reg) => {
-						reg.showNotification("HEY!!!", {
-							vibrate: [200, 100, 200],
-						});
-					});
-				}
-			});
-		}
-
-		// At last, if the user has denied notifications, and you
-		// want to be respectful there is no need to bother them any more.
-	};
+	const classes = useStyles();
 	return (
-		<DesktopNotificationsProvider>
-			<div>
-				<h1>This is my app</h1>
-				<button onClick={() => notifyMe()}>notify me</button>
-				<ClockTabs />
-			</div>
-		</DesktopNotificationsProvider>
+		<div className={classes.root}>
+			<ThemeProvider theme={theme}>
+					<DesktopNotificationsProvider>
+						<Container maxWidth="sm" className={classes.mainContainer}>
+							<ClockTabs />
+						</Container>
+					</DesktopNotificationsProvider>
+			</ThemeProvider>
+		</div>
 	);
 };
 

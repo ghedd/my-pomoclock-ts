@@ -5,7 +5,8 @@ import { ClockProps } from "../ClockTabs";
 const ShorkBreakClock: React.FC<ClockProps> = ({ handleOnClockEnd }) => {
 	const [isPaused, setPaused] = useState(true);
 	// const [isDone, setDone] = useState(false);
-	const { minute, second, isDone } = useCountdownTimer(isPaused, 1);
+	const duration = 5;
+	const { minute, second, isDone } = useCountdownTimer(isPaused, duration);
 
 	useEffect(() => {
 		if (isDone) {
@@ -17,12 +18,11 @@ const ShorkBreakClock: React.FC<ClockProps> = ({ handleOnClockEnd }) => {
 
 	return (
 		<div>
-			<h2>This should be the short-break clock</h2>
+			<span>{parseTimeNum(minute)}:</span>
+			<span>{parseTimeNum(second)}</span>
 			<button onClick={() => setPaused((isPaused) => !isPaused)}>
 				{isPaused ? "run" : "pause"}
 			</button>
-			<span>{parseTimeNum(minute)}:</span>
-			<span>{parseTimeNum(second)}</span>
 		</div>
 	);
 };
