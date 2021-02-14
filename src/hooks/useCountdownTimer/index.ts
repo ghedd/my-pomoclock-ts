@@ -1,12 +1,19 @@
 import { useState, useEffect } from "react";
 
-const useCountdownTimer = ( isPaused: boolean, duration: number, isReset = false, ) => {
+const useCountdownTimer = ( isPaused: boolean, duration: number ) => {
   const DEFAULT_POM = 25;
   const [isDone, setDone] = useState( false );
+  const [isReset, setReset] = useState( false )
   const [isRunning, setRunning] = useState( false );
   const [minute, setMinute] = useState( duration || DEFAULT_POM );
   const [secondOnly, setSecondOnly] = useState( minute * 60 )
   const [second, setSecond] = useState( 0 );
+
+  // METHODS
+  const resetTimer = () => {
+    setReset( true )
+  }
+  /* --------------------------------------- */
 
   useEffect( () => {
     if ( isPaused ) {
@@ -30,6 +37,19 @@ const useCountdownTimer = ( isPaused: boolean, duration: number, isReset = false
   }, [duration, isDone] )
 
   useEffect( () => {
+    if ( isReset ) {
+      setMinute( duration );
+      setSecondOnly( duration * 60 )
+      setSecond( 0 )
+    }
+    return () => {
+      setReset( false )
+    }
+  }, [duration, isReset] )
+
+  /* ------------ timer acttions ----------- */
+
+  useEffect( () => {
     let timer: any;
     if ( isRunning ) {
       timer = setInterval( () => {
@@ -48,17 +68,14 @@ const useCountdownTimer = ( isPaused: boolean, duration: number, isReset = false
 
       }, 1000 )
     }
-    if ( isReset ) {
-      setSecond( 0 );
-      setMinute( duration )
-    }
 
     return () => {
       clearInterval( timer );
     }
   }, [duration, isRunning, isReset, minute, second] )
+  /* --------------------------------------- */
 
-  return { isRunning, minute, second, secondOnly, isDone }
+  return { isRunning, minute, second, secondOnly, isDone, resetTimer }
 }
 
 export default useCountdownTimer

@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { parseTimeNum } from "../../utils/Functions";
-import { createStyles, makeStyles } from "@material-ui/core";
+/* ---------------- styles --------------- */
 
+import { createStyles, makeStyles } from "@material-ui/core";
 interface ClockEclipseProps {
 	secondOnly: number;
 	duration: number;
@@ -11,7 +12,6 @@ interface ClockEclipseProps {
 	strokeColor?: string;
 	backgroundColor?: string;
 }
-
 const ClockEclipse: React.FC<ClockEclipseProps> = ({
 	secondOnly,
 	duration,

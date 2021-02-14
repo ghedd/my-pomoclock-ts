@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from "react";
 import useCountdownTimer from "../../hooks/useCountdownTimer";
 // import { parseTimeNum } from "../../utils/Functions/";
-import ClockEclipse from "../ClockEclipse";
 import { ClockProps } from "../ClockTabs";
+import useWidth from "../../hooks/useWidth";
 
 /* ---------------- styles --------------- */
-import Grid from "@material-ui/core/Grid";
-import { makeStyles, Theme, createStyles } from "@material-ui/core";
+import { Grid, makeStyles, Theme, createStyles } from "@material-ui/core";
+import TimerControlGroup from "../TimerControlGroup";
+import ClockEclipse from "../ClockEclipse";
+/* --------------------------------------- */
 
 const useStyles = makeStyles((theme: Theme) =>
 	createStyles({
@@ -25,10 +27,17 @@ const WorkClock: React.FC<ClockProps> = ({
 	const [isPaused, setPaused] = useState(true);
 	const [count, setCount] = useState(0);
 	const duration = 25;
-	const { minute, second, secondOnly, isDone } = useCountdownTimer(
+	const { minute, second, secondOnly, isDone, resetTimer } = useCountdownTimer(
 		isPaused,
 		duration
 	);
+	const { windowWidth } = useWidth();
+
+	// METHODS
+	const toggleTimer = () => {
+		setPaused(!isPaused);
+	};
+	/* --------------------------------------- */
 
 	useEffect(() => {
 		if (isDone) {
@@ -45,6 +54,7 @@ const WorkClock: React.FC<ClockProps> = ({
 	}, [count, handleIntervalCount]);
 
 	const classes = useStyles();
+
 	return (
 		<Grid
 			className={classes.root}
@@ -56,7 +66,7 @@ const WorkClock: React.FC<ClockProps> = ({
 		>
 			<Grid item>
 				<ClockEclipse
-					size={400}
+					size={windowWidth <= 400 ? 200 : windowWidth <= 768 ? 300 : 350}
 					duration={duration}
 					minute={minute}
 					second={second}
@@ -64,9 +74,11 @@ const WorkClock: React.FC<ClockProps> = ({
 				/>
 			</Grid>
 			<Grid item>
-				<button onClick={() => setPaused((isPaused) => !isPaused)}>
-					{isPaused ? "run" : "pause"}
-				</button>
+				<TimerControlGroup
+					isPaused={isPaused}
+					toggleTimer={toggleTimer}
+					resetTimer={resetTimer}
+				/>
 			</Grid>
 		</Grid>
 	);

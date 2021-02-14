@@ -1,6 +1,7 @@
 html,
 body {
 	box-sizing: border-box;
+	height: 100%;
 }
 
 html {
@@ -8,5 +9,9 @@ html {
 	place-items: center;
 }
 body {
+	background-image: url("./assets/images/bgr.webp");
+	background-position: center;
+	background-repeat: no-repeat;
+	background-size: cover;
 	background-color: rgb(53, 53, 77);
 }

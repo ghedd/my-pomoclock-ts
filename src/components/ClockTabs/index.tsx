@@ -10,12 +10,8 @@ import { useAudio } from "../../hooks/useAudio";
 
 /* ---------------- styles --------------- */
 import { createStyles, makeStyles, Theme } from "@material-ui/core";
-import Card from "@material-ui/core/Card";
-import AppBar from "@material-ui/core/AppBar";
-import Tabs from "@material-ui/core/Tabs";
-import Tab from "@material-ui/core/Tab";
+import { Card, AppBar, Tabs, Tab, Box } from "@material-ui/core";
 // import Typography from "@material-ui/core/Typography";
-import Box from "@material-ui/core/Box";
 
 export interface ClockProps {
 	handleIntervalCount?(count: number): void | null;
@@ -34,6 +30,8 @@ const useStyles = makeStyles((theme: Theme) =>
 		clockCard: {
 			width: "100%",
 			minHeight: 400,
+			
+
 		},
 	})
 );
@@ -140,7 +138,7 @@ const ClockTabs: React.FC = () => {
 					aria-label="clock tab pannel"
 				>
 					<Tab
-						label="Focus Clock"
+						label="Focus"
 						{...a11yProps(0)}
 						onClick={() => setCurrentClock(workClock)}
 					/>
