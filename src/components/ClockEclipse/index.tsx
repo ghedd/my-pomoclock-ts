@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { parseTimeNum } from "../../utils/Functions";
 /* ---------------- styles --------------- */
 
-import { createStyles, makeStyles } from "@material-ui/core";
+import { createStyles, makeStyles, Theme } from "@material-ui/core";
 interface ClockEclipseProps {
 	secondOnly: number;
 	duration: number;
@@ -11,6 +11,7 @@ interface ClockEclipseProps {
 	size?: number;
 	strokeColor?: string;
 	backgroundColor?: string;
+	currentTimer: string;
 }
 const ClockEclipse: React.FC<ClockEclipseProps> = ({
 	secondOnly,
@@ -18,12 +19,19 @@ const ClockEclipse: React.FC<ClockEclipseProps> = ({
 	minute,
 	second,
 	size = 60,
-	strokeColor = "green",
-	backgroundColor = "red",
+	// strokeColor = "green",
+	// backgroundColor = "red",
+	currentTimer,
 }) => {
 	const [timeRing, setTimeRing] = useState(0);
-
-	const useStyles = makeStyles(() =>
+	const makeFill = (theme: Theme) => {
+		return currentTimer === "work"
+			? theme.palette.secondary.main
+			: currentTimer === "short-break"
+			? theme.palette.success.main
+			: theme.palette.info.main;
+	};
+	const useStyles = makeStyles((theme: Theme) =>
 		createStyles({
 			clockEclipse: {
 				display: "flex",
@@ -39,10 +47,15 @@ const ClockEclipse: React.FC<ClockEclipseProps> = ({
 				fontWeight: 700,
 				fontFamily: `"Roboto Mono", monospace`,
 				fontSize: "clamp(3rem, 15vw, 6rem)",
-				color: "#fafafa",
+				color: theme.palette.primary.main,
+			},
+			clockEclipse__ringBgr: {
+				fill: makeFill(theme),
+				opacity: 0.5,
+				stroke: theme.palette.grey[100],
 			},
 			clockEclipse__ring: {
-				stroke: `${strokeColor}`,
+				stroke: theme.palette.primary.main,
 				strokeLinecap: "round",
 				transition: "100ms stroke-dashoffset ease-out",
 				// axis compensation
@@ -54,8 +67,6 @@ const ClockEclipse: React.FC<ClockEclipseProps> = ({
 
 	/* ----------- ring properties ----------- */
 	// const size = 120;
-	const cx = size / 2;
-	const cy = size / 2;
 	const strokeWidth = 12;
 	const radius = (size - strokeWidth) / 2;
 	const circumference = radius * 2 * Math.PI;
@@ -89,14 +100,14 @@ const ClockEclipse: React.FC<ClockEclipseProps> = ({
 				<span>{parseTimeNum(second)}</span>
 			</div>
 
-			<svg className="clockEclipse" height={size} width={size}>
+			<svg height={size} width={size}>
 				<circle
-					stroke="#c4c4c4"
+					className={classes.clockEclipse__ringBgr}
 					strokeWidth={strokeWidth}
-					fill={backgroundColor}
+					// fill={}
 					r={radius}
-					cx={cx}
-					cy={cy}
+					cx="50%"
+					cy="50%"
 					style={{ position: "absolute" }}
 				/>
 				<circle
@@ -104,8 +115,8 @@ const ClockEclipse: React.FC<ClockEclipseProps> = ({
 					strokeWidth={strokeWidth}
 					fill="none"
 					r={radius}
-					cx={cx}
-					cy={cy}
+					cx="50%"
+					cy="50%"
 					strokeDasharray={`${circumference} ${circumference}`}
 					style={{ strokeDashoffset: timeRing }}
 				/>

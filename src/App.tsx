@@ -8,10 +8,26 @@ import Container from "@material-ui/core/Container";
 import { createStyles, makeStyles } from "@material-ui/core";
 import { ThemeProvider, createMuiTheme } from "@material-ui/core/styles";
 
-
 const theme = createMuiTheme({
 	typography: {
 		fontFamily: `"Poppins", sans-serif`,
+	},
+	palette: {
+		primary: {
+			main: "#fafafa",
+		},
+		secondary: {
+			main: "#9c0506",
+
+			"100": "#00b28e",
+			"200": "#0a5142",
+		},
+		success: {
+			main: "#00b28e",
+		},
+		info: {
+			main: "#0a5142",
+		},
 	},
 });
 
@@ -34,11 +50,11 @@ const App = () => {
 	return (
 		<div className={classes.root}>
 			<ThemeProvider theme={theme}>
-					<DesktopNotificationsProvider>
-						<Container maxWidth="sm" className={classes.mainContainer}>
-							<ClockTabs />
-						</Container>
-					</DesktopNotificationsProvider>
+				<DesktopNotificationsProvider>
+					<Container maxWidth="sm" className={classes.mainContainer}>
+						<ClockTabs />
+					</Container>
+				</DesktopNotificationsProvider>
 			</ThemeProvider>
 		</div>
 	);

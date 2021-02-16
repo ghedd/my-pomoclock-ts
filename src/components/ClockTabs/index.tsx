@@ -1,5 +1,5 @@
 // import React from 'react'
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import useDesktopNotifications from "../../hooks/useDesktopNotifications";
 import LongBreakClock from "../LongBreakClock";
 import ShorkBreakClock from "../ShortBreakClock";
@@ -10,6 +10,7 @@ import { useAudio } from "../../hooks/useAudio";
 
 /* ---------------- styles --------------- */
 import { createStyles, makeStyles, Theme } from "@material-ui/core";
+// import { ThemeProvider, withStyles } from "@material-ui/core/styles";
 import { Card, AppBar, Tabs, Tab, Box } from "@material-ui/core";
 // import Typography from "@material-ui/core/Typography";
 
@@ -27,11 +28,14 @@ interface TabPanelProps {
 
 const useStyles = makeStyles((theme: Theme) =>
 	createStyles({
-		clockCard: {
+		root: {
 			width: "100%",
 			minHeight: 400,
-			
-
+			background: "rgb(67, 67, 67, 0.5)",
+			// boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)",
+			backdropFilter: "blur(30px)",
+			borderRadius: 12,
+			boxShadow: "-10px 15px 20px 4px rgba(0,31,24,0.6)",
 		},
 	})
 );
@@ -127,7 +131,7 @@ const ClockTabs: React.FC = () => {
 
 	const classes = useStyles();
 	return (
-		<Card className={classes.clockCard}>
+		<Card className={classes.root}>
 			<AppBar position="static" color="transparent">
 				<Tabs
 					value={value}

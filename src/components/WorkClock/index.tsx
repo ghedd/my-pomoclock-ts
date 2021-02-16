@@ -71,6 +71,7 @@ const WorkClock: React.FC<ClockProps> = ({
 					minute={minute}
 					second={second}
 					secondOnly={secondOnly}
+					currentTimer={"work"}
 				/>
 			</Grid>
 			<Grid item>

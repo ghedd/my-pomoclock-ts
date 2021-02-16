@@ -59,6 +59,7 @@ const LongBreakClock: React.FC<ClockProps> = ({ handleOnClockEnd }) => {
 					minute={minute}
 					second={second}
 					secondOnly={secondOnly}
+					currentTimer={"long-break"}
 				/>
 			</Grid>
 			<Grid item>

@@ -1,3 +1,5 @@
 
 TODO:
-  ☐ create useWindowWidth hook to resize clock view on different screen size
+  ✔ create useWindowWidth hook to resize clock view on different screen size @done(21-02-13 21:15)
+  
+  ☐ apply glassmorphism style to timer card background

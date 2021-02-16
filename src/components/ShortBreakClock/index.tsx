@@ -61,6 +61,7 @@ const ShorkBreakClock: React.FC<ClockProps> = ({ handleOnClockEnd }) => {
 					minute={minute}
 					second={second}
 					secondOnly={secondOnly}
+					currentTimer={"short-break"}
 				/>
 			</Grid>
 			<Grid item>
