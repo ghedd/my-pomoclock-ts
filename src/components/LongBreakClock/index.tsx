@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import useCountdownTimer from "../../hooks/useCountdownTimer";
 import { ClockProps } from "../ClockTabs";
 import useWidth from "../../hooks/useWidth";
+import useDesktopNotifications from "../../hooks/useDesktopNotifications";
 
 /* ---------------- styles --------------- */
 import { Grid, makeStyles, Theme, createStyles } from "@material-ui/core";
@@ -26,12 +27,16 @@ const LongBreakClock: React.FC<ClockProps> = ({ handleOnClockEnd }) => {
 		duration
 	);
 	const { windowWidth } = useWidth();
-
+	const { dispatchMessage } = useDesktopNotifications();
 	// METHODS
 	const toggleTimer = () => {
 		setPaused(!isPaused);
 	};
 	/* --------------------------------------- */
+	useEffect(() => {
+		if (minute === 4) dispatchMessage("Head's up! You've got about 5 minutes left.");
+	// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [minute, second]);
 
 	useEffect(() => {
 		if (isDone) {

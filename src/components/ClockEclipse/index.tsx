@@ -33,6 +33,14 @@ const ClockEclipse: React.FC<ClockEclipseProps> = ({
 	};
 	const useStyles = makeStyles((theme: Theme) =>
 		createStyles({
+			"@keyframes smoothDash": {
+				from: {
+					strokeDashoffset: 0,
+				},
+				to: {
+					strokeDashoffset: `${timeRing}`,
+				},
+			},
 			clockEclipse: {
 				display: "flex",
 				alignItems: "center",
@@ -57,7 +65,10 @@ const ClockEclipse: React.FC<ClockEclipseProps> = ({
 			clockEclipse__ring: {
 				stroke: theme.palette.primary.main,
 				strokeLinecap: "round",
-				transition: "100ms stroke-dashoffset ease-out",
+				transition: "1000ms stroke-dashoffset linear",
+				// the delay is an attempt to achieve
+				// smooth circle animation,
+				transitionDelay: "110ms",
 				// axis compensation
 				transform: "rotate(-90deg)",
 				transformOrigin: "50% 50%",

@@ -50,29 +50,39 @@ const useCountdownTimer = ( isPaused: boolean, duration: number ) => {
   /* ------------ timer acttions ----------- */
 
   useEffect( () => {
+
+
     let timer: any;
-    if ( isRunning ) {
+    if ( isRunning && isReset === false ) {
+      const mintoMilliseconds = ( min: number ) => min * 60000;
+      const now = new Date().getTime();
+      const countdowntDate = new Date( now + mintoMilliseconds( duration ) ).getTime();
+
       timer = setInterval( () => {
-        setSecond( second - 1 );
-        setSecondOnly( secondOnly => secondOnly - 1 )
-        if ( second === 0 ) {
-          setSecond( 59 );
-          setMinute( minute - 1 );
-        }
-        if ( ( second === 0 && minute === 0 ) ) {
-          setSecond( 0 );
-          setSecondOnly( 0 );
+        const moment = new Date().getTime();
+        let dis = countdowntDate - moment;
+
+        let mins = Math.floor( ( dis % ( 1000 * 60 * 60 ) ) / ( 1000 * 60 ) );
+        let secs = Math.floor( ( dis % ( 1000 * 60 ) ) / 1000 );
+        setMinute( mins )
+        setSecond( secs );
+        setSecondOnly( secondOnly => Math.floor( dis / 1000 ) )
+        if ( dis < 0 ) {
           setDone( true )
-          // setMinute( duration || DEFAULT_POM )
+          return clearInterval( timer );
+
         }
 
-      }, 1000 )
+      }, 990 )
+      //NOTE: the interval was set just below 1000
+      // to compansate for latency caused by
+      // setInterval
     }
 
     return () => {
       clearInterval( timer );
     }
-  }, [duration, isRunning, isReset, minute, second] )
+  }, [isRunning, isReset, duration] )
   /* --------------------------------------- */
 
   return { isRunning, minute, second, secondOnly, isDone, resetTimer }

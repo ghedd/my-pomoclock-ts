@@ -3,6 +3,7 @@ import useCountdownTimer from "../../hooks/useCountdownTimer";
 // import { parseTimeNum } from "../../utils/Functions/";
 import { ClockProps } from "../ClockTabs";
 import useWidth from "../../hooks/useWidth";
+import useDesktopNotifications from "../../hooks/useDesktopNotifications";
 
 /* ---------------- styles --------------- */
 import { Grid, makeStyles, Theme, createStyles } from "@material-ui/core";
@@ -32,7 +33,7 @@ const WorkClock: React.FC<ClockProps> = ({
 		duration
 	);
 	const { windowWidth } = useWidth();
-
+	const { dispatchMessage } = useDesktopNotifications();
 	// METHODS
 	const toggleTimer = () => {
 		setPaused(!isPaused);
@@ -48,6 +49,10 @@ const WorkClock: React.FC<ClockProps> = ({
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [handleOnClockEnd, isDone]);
+
+	useEffect(() => {
+		if (minute === 4) dispatchMessage("Head's up! You've got 5 minutes left.");
+	}, [minute]);
 
 	useEffect(() => {
 		handleIntervalCount && handleIntervalCount(count);
