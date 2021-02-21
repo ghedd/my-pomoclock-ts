@@ -32,10 +32,10 @@ const useStyles = makeStyles((theme: Theme) =>
 			width: "100%",
 			minHeight: 400,
 			background: "rgb(67, 67, 67, 0.5)",
-			// boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)",
+			boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)",
 			backdropFilter: "blur(30px)",
 			borderRadius: 12,
-			boxShadow: "-10px 15px 20px 4px rgba(0,31,24,0.6)",
+			// boxShadow: "-10px 15px 20px 4px rgba(0,31,24,0.6)",
 		},
 	})
 );
