@@ -6,6 +6,7 @@ import ShorkBreakClock from "../ShortBreakClock";
 import WorkClock from "../WorkClock";
 import timesUp from "../../assets/audio/times-up.mp3";
 import { useAudio } from "../../hooks/useAudio";
+import useSettings from "../../hooks/useSettings";
 // import { CountDownTimerProvider } from "../../contexts/CountDownTimerCtx";
 
 /* ---------------- styles --------------- */
@@ -72,7 +73,7 @@ const ClockTabs: React.FC = () => {
 	const [workClockCount, setCount] = useState(1);
 	const [currentClock, setCurrentClock] = useState(workClock);
 	const [isDone, setDone] = useState(false);
-
+	const { timerSettings } = useSettings();
 	/* ----------------- MUI ----------------- */
 	const [value, setValue] = useState(0);
 
@@ -94,7 +95,10 @@ const ClockTabs: React.FC = () => {
 
 	const autoSwitchClock = () => {
 		if (currentClock === clocks.workClock) {
-			if (workClockCount !== 0 && workClockCount % 2 === 0) {
+			if (
+				workClockCount !== 0 &&
+				workClockCount % timerSettings.focusInterval === 0
+			) {
 				dispatchMessage("Enjoy your long break!");
 				setCurrentClock(clocks.longBreak);
 				setValue(2);
