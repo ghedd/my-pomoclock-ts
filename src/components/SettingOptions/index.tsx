@@ -48,9 +48,9 @@ const SettingOptions: React.FC<SettingOptionsProps> = ({
 		focusInterval: "focusInterval",
 	};
 	const focusDurations = [20, 25, 30, 35, 40, 45];
-	const shortBreakDurations = [1, 3, 5, 10];
+	const shortBreakDurations = [3, 5, 7];
 	const longBreakDurations = [15, 20, 25, 30];
-	const focusIntervals = [2, 3, 4, 5, 6];
+	const focusIntervals = [3, 4, 5, 6];
 	const classes = useStyles();
 	const { windowWidth } = useWidth();
 
