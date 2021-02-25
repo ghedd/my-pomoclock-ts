@@ -9,6 +9,7 @@ import useDesktopNotifications from "../../hooks/useDesktopNotifications";
 import { Grid, makeStyles, Theme, createStyles } from "@material-ui/core";
 import TimerControlGroup from "../TimerControlGroup";
 import ClockEclipse from "../ClockEclipse";
+import useSettings from "../../hooks/useSettings";
 /* --------------------------------------- */
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -25,12 +26,13 @@ const WorkClock: React.FC<ClockProps> = ({
 	handleOnClockEnd,
 	handleIntervalCount,
 }) => {
+	const { timerSettings } = useSettings();
 	const [isPaused, setPaused] = useState(true);
 	const [count, setCount] = useState(0);
-	const duration = 25;
+	// const [duration] = useState(timerSettings.focusDuration);
 	const { minute, second, secondOnly, isDone, resetTimer } = useCountdownTimer(
 		isPaused,
-		duration
+		timerSettings.focusDuration
 	);
 	const { windowWidth } = useWidth();
 	const { dispatchMessage } = useDesktopNotifications();
@@ -39,6 +41,8 @@ const WorkClock: React.FC<ClockProps> = ({
 		setPaused(!isPaused);
 	};
 	/* --------------------------------------- */
+
+	
 
 	useEffect(() => {
 		if (isDone) {
@@ -52,6 +56,8 @@ const WorkClock: React.FC<ClockProps> = ({
 
 	useEffect(() => {
 		if (minute === 4) dispatchMessage("Head's up! You've got 5 minutes left.");
+
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [minute]);
 
 	useEffect(() => {
@@ -72,7 +78,7 @@ const WorkClock: React.FC<ClockProps> = ({
 			<Grid item>
 				<ClockEclipse
 					size={windowWidth <= 400 ? 200 : windowWidth <= 768 ? 300 : 350}
-					duration={duration}
+					duration={timerSettings.focusDuration}
 					minute={minute}
 					second={second}
 					secondOnly={secondOnly}

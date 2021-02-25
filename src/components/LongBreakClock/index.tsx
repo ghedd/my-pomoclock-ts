@@ -8,6 +8,7 @@ import useDesktopNotifications from "../../hooks/useDesktopNotifications";
 import { Grid, makeStyles, Theme, createStyles } from "@material-ui/core";
 import TimerControlGroup from "../TimerControlGroup";
 import ClockEclipse from "../ClockEclipse";
+import useSettings from "../../hooks/useSettings";
 /* --------------------------------------- */
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -21,10 +22,11 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 const LongBreakClock: React.FC<ClockProps> = ({ handleOnClockEnd }) => {
 	const [isPaused, setPaused] = useState(true);
-	const duration = 15;
+	// const duration = 15;
+	const { timerSettings } = useSettings();
 	const { minute, second, secondOnly, isDone, resetTimer } = useCountdownTimer(
 		isPaused,
-		duration
+		timerSettings.longBreakDuration
 	);
 	const { windowWidth } = useWidth();
 	const { dispatchMessage } = useDesktopNotifications();
@@ -34,8 +36,9 @@ const LongBreakClock: React.FC<ClockProps> = ({ handleOnClockEnd }) => {
 	};
 	/* --------------------------------------- */
 	useEffect(() => {
-		if (minute === 4) dispatchMessage("Head's up! You've got about 5 minutes left.");
-	// eslint-disable-next-line react-hooks/exhaustive-deps
+		if (minute === 4)
+			dispatchMessage("Head's up! You've got about 5 minutes left.");
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [minute, second]);
 
 	useEffect(() => {
@@ -60,7 +63,7 @@ const LongBreakClock: React.FC<ClockProps> = ({ handleOnClockEnd }) => {
 			<Grid item>
 				<ClockEclipse
 					size={windowWidth <= 400 ? 200 : windowWidth <= 768 ? 300 : 350}
-					duration={duration}
+					duration={timerSettings.longBreakDuration}
 					minute={minute}
 					second={second}
 					secondOnly={secondOnly}

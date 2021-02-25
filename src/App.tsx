@@ -8,6 +8,7 @@ import Container from "@material-ui/core/Container";
 import { createStyles, makeStyles } from "@material-ui/core";
 import { ThemeProvider, createMuiTheme } from "@material-ui/core/styles";
 import Header from "./components/Header";
+import { SettingsProvider } from "./contexts/SettingsCtx";
 
 const theme = createMuiTheme({
 	typography: {
@@ -50,14 +51,16 @@ const App = () => {
 	const classes = useStyles();
 	return (
 		<div className={classes.root}>
-			<ThemeProvider theme={theme}>
-				<DesktopNotificationsProvider>
-					<Header />
-					<Container  maxWidth="sm" className={classes.mainContainer}>
-						<ClockTabs />
-					</Container>
-				</DesktopNotificationsProvider>
-			</ThemeProvider>
+			<SettingsProvider>
+				<ThemeProvider theme={theme}>
+					<DesktopNotificationsProvider>
+						<Header />
+						<Container maxWidth="sm" className={classes.mainContainer}>
+							<ClockTabs />
+						</Container>
+					</DesktopNotificationsProvider>
+				</ThemeProvider>
+			</SettingsProvider>
 		</div>
 	);
 };

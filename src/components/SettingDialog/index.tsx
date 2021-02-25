@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import useSettings from "../../hooks/useSettings";
 import {
 	Button,
 	createStyles,
@@ -13,7 +14,7 @@ import {
 	WithStyles,
 } from "@material-ui/core";
 import MuiDialogTitle from "@material-ui/core/DialogTitle";
-import { Settings } from "@material-ui/icons";
+import { Settings, Check } from "@material-ui/icons";
 import CloseIcon from "@material-ui/icons/Close";
 import SettingOptions from "../SettingOptions";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
@@ -61,16 +62,41 @@ const DialogTitle = withStyles(styles)((props: DialogTitleProps) => {
 });
 
 const SettingDialog: React.FC = () => {
+	const {
+		timerSettings,
+		isUpdating,
+		updateSettings,
+		toggleUpdating,
+	} = useSettings();
+	const initSettings = {
+		focusDuration: timerSettings.focusDuration,
+		focusInterval: timerSettings.focusInterval,
+		longBreakDuration: timerSettings.longBreakDuration,
+		shortBreakDuration: timerSettings.shortBreakDuration,
+	};
+	const [customSettings, setCustomSettings] = useState(initSettings);
+
 	const [isOpen, setOpen] = useState(false);
 	const theme = useTheme();
 	const fullScreen = useMediaQuery(theme.breakpoints.down("xs"));
 
 	const handleClickOpen = () => {
+		toggleUpdating(true);
 		setOpen(true);
 	};
 	const handleClose = () => {
 		setOpen(false);
+		setCustomSettings((customSettings) => initSettings);
 	};
+
+	const handleCustomSettings = (
+		event: React.ChangeEvent<{ name?: string; value: unknown }>
+	) => {
+		const name = event.target.name as keyof typeof customSettings;
+		setCustomSettings({ ...customSettings, [name]: event.target.value });
+		toggleUpdating(true);
+	};
+
 	return (
 		<>
 			<IconButton
@@ -87,12 +113,20 @@ const SettingDialog: React.FC = () => {
 				</DialogTitle>
 				<DialogContent>
 					{/* <DialogContentText> */}
-					<SettingOptions />
+					<SettingOptions
+						focusDuration={customSettings.focusDuration}
+						focusInterval={customSettings.focusInterval}
+						longBreakDuration={customSettings.longBreakDuration}
+						shortBreakDuration={customSettings.shortBreakDuration}
+						handleCustomSettings={handleCustomSettings}
+					/>
 					{/* </DialogContentText> */}
 				</DialogContent>
 				<DialogActions>
-					<Button>save</Button>
-					<Button color="secondary" onClick={() => setOpen(false)}>
+					<Button onClick={() => updateSettings(customSettings)}>
+						{isUpdating ? "save" : <Check />}
+					</Button>
+					<Button color="secondary" onClick={() => handleClose()}>
 						cancel
 					</Button>
 				</DialogActions>

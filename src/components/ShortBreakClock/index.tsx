@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import useCountdownTimer from "../../hooks/useCountdownTimer";
 import { ClockProps } from "../ClockTabs";
 import useWidth from "../../hooks/useWidth";
+import useSettings from "../../hooks/useSettings";
 
 /* ---------------- styles --------------- */
 import { Grid, makeStyles, Theme, createStyles } from "@material-ui/core";
@@ -21,10 +22,11 @@ const useStyles = makeStyles((theme: Theme) =>
 
 const ShorkBreakClock: React.FC<ClockProps> = ({ handleOnClockEnd }) => {
 	const [isPaused, setPaused] = useState(true);
-	const duration = 5;
+	// const duration = 5;
+	const { timerSettings } = useSettings();
 	const { minute, second, secondOnly, isDone, resetTimer } = useCountdownTimer(
 		isPaused,
-		duration
+		timerSettings.shortBreakDuration
 	);
 
 	const { windowWidth } = useWidth();
@@ -57,7 +59,7 @@ const ShorkBreakClock: React.FC<ClockProps> = ({ handleOnClockEnd }) => {
 			<Grid item>
 				<ClockEclipse
 					size={windowWidth <= 400 ? 200 : windowWidth <= 768 ? 300 : 350}
-					duration={duration}
+					duration={timerSettings.shortBreakDuration}
 					minute={minute}
 					second={second}
 					secondOnly={secondOnly}

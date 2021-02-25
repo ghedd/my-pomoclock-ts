@@ -54,7 +54,7 @@ const ClockEclipse: React.FC<ClockEclipseProps> = ({
 				transform: "translate(-50%, -50%)",
 				fontWeight: 700,
 				fontFamily: `"Roboto Mono", monospace`,
-				fontSize: "clamp(3rem, 15vw, 6rem)",
+				fontSize: "clamp(3rem, 12vw, 6rem)",
 				color: theme.palette.primary.main,
 			},
 			clockEclipse__ringBgr: {

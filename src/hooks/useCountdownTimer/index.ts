@@ -14,6 +14,9 @@ const useCountdownTimer = ( isPaused: boolean, duration: number ) => {
     setReset( true )
   }
   /* --------------------------------------- */
+  useEffect( () => {
+    setMinute( duration )
+  }, [duration] )
 
   useEffect( () => {
     if ( isPaused ) {

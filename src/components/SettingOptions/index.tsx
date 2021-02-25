@@ -1,4 +1,7 @@
 import React, { useState } from "react";
+// import { SettingsCtx } from "../../contexts/SettingsCtx";
+
+/* ---------------- styles --------------- */
 import {
 	createStyles,
 	FormControl,
@@ -26,14 +29,28 @@ const useStyles = makeStyles((theme: Theme) =>
 	})
 );
 
-const SettingOptions: React.FC = () => {
-	const initOptions = {
-		focusDuration: 25,
-		shortBreakDuration: 5,
-		longBreakDuration: 15,
-		focusInterval: 4,
-	};
-	const [timerOptions, setOptions] = useState(initOptions);
+interface SettingOptionsProps {
+	focusDuration: number;
+	focusInterval: number;
+	longBreakDuration: number;
+	shortBreakDuration: number;
+	handleCustomSettings(customSettings: any): void;
+}
+
+const SettingOptions: React.FC<SettingOptionsProps> = ({
+	focusDuration,
+	focusInterval,
+	longBreakDuration,
+	shortBreakDuration,
+	handleCustomSettings,
+}) => {
+	// const initOptions = {
+	// 	focusDuration: 25,
+	// 	shortBreakDuration: 5,
+	// 	longBreakDuration: 15,
+	// 	focusInterval: 4,
+	// };
+	// const [timerOptions, setOptions] = useState(initOptions);
 
 	const optionLabels = {
 		focusDuration: "focusDuration",
@@ -49,12 +66,14 @@ const SettingOptions: React.FC = () => {
 	const { windowWidth } = useWidth();
 
 	//METHODS
-	const handleChange = (
+	/* const handleChange = (
 		event: React.ChangeEvent<{ name?: string; value: unknown }>
 	) => {
-		const name = event.target.name as keyof typeof timerOptions;
+		const name = event.target.name as keyof typeof initOptions;
 		setOptions({ ...timerOptions, [name]: event.target.value });
-	};
+		handleCustomSettings({ [name]: event.target.value });
+	}; */
+
 	const createOptionInput = (option: string, values: number[]) => {
 		let input = {
 			displayName: "",
@@ -67,28 +86,32 @@ const SettingOptions: React.FC = () => {
 				input = {
 					displayName: "Focus duration",
 					name: option,
-					value: timerOptions.focusDuration,
+					// value: timerOptions.focusDuration,
+					value: focusDuration,
 				};
 				break;
 			case "shortBreakDuration":
 				input = {
 					displayName: "Short break duration",
 					name: option,
-					value: timerOptions.shortBreakDuration,
+					// value: timerOptions.shortBreakDuration,
+					value: shortBreakDuration,
 				};
 				break;
 			case "longBreakDuration":
 				input = {
 					displayName: "Long break duration",
 					name: option,
-					value: timerOptions.longBreakDuration,
+					// value: timerOptions.longBreakDuration,
+					value: longBreakDuration,
 				};
 				break;
 			case "focusInterval":
 				input = {
 					displayName: "Focus sessions before long break",
 					name: option,
-					value: timerOptions.focusInterval,
+					// value: timerOptions.focusInterval,
+					value: focusInterval,
 				};
 				break;
 		}
@@ -108,7 +131,8 @@ const SettingOptions: React.FC = () => {
 					<Select
 						value={input.value}
 						color="secondary"
-						onChange={handleChange}
+						// onChange={handleChange}
+						onChange={handleCustomSettings}
 						// displayEmpty
 						// className={classes.selectEmpty}
 						inputProps={{
