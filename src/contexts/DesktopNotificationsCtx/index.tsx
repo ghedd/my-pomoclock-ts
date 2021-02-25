@@ -14,6 +14,31 @@ export const DesktopNotificationsProvider: React.FC = ({ children }) => {
 	const dispatchMessage = useCallback((message: string) => {
 		setMessage(message);
 	}, []);
+
+	//  METHODS
+	const askForPermission = () => {
+		if (!("Notification" in window)) {
+			alert(
+				"This browser does not support desktop notification, you may not get notified when a timer ends. For better experience, please switch to another browser (i.e.: Chrome, Firefox )"
+			);
+		} else if (Notification.permission === "granted") {
+			// If it's okay let's create a notification
+			console.log("Notification granted");
+		}
+		// Otherwise, we need to ask the user for permission
+		else if (Notification.permission !== "denied") {
+			Notification.requestPermission().then(function (permission) {
+				// If the user accepts, let's create a notification
+				if (permission === "granted") {
+					navigator.serviceWorker.ready.then((reg) => {
+						reg.showNotification(
+							"Thank you for using PomO'clock! You'll be notified every time your clocks end."
+						);
+					});
+				}
+			});
+		}
+	};
 	const showNotification = (message: string) => {
 		// Let's check if the browser supports notifications
 		if (!("Notification" in window)) {
@@ -47,6 +72,10 @@ export const DesktopNotificationsProvider: React.FC = ({ children }) => {
 		// At last, if the user has denied notifications, and you
 		// want to be respectful there is no need to bother them any more.
 	};
+	useEffect(() => {
+		askForPermission();
+	}, []);
+
 	useEffect(() => {
 		if (message !== "") {
 			showNotification(message);
