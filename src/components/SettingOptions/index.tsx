@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 // import { SettingsCtx } from "../../contexts/SettingsCtx";
 
 /* ---------------- styles --------------- */
@@ -23,9 +23,6 @@ const useStyles = makeStyles((theme: Theme) =>
 			minWidth: 180,
 			width: "100%",
 		},
-		// selectEmpty: {
-		// 	marginTop: theme.spacing(2),
-		// },
 	})
 );
 
@@ -44,14 +41,6 @@ const SettingOptions: React.FC<SettingOptionsProps> = ({
 	shortBreakDuration,
 	handleCustomSettings,
 }) => {
-	// const initOptions = {
-	// 	focusDuration: 25,
-	// 	shortBreakDuration: 5,
-	// 	longBreakDuration: 15,
-	// 	focusInterval: 4,
-	// };
-	// const [timerOptions, setOptions] = useState(initOptions);
-
 	const optionLabels = {
 		focusDuration: "focusDuration",
 		shortBreakDuration: "shortBreakDuration",
@@ -133,8 +122,6 @@ const SettingOptions: React.FC<SettingOptionsProps> = ({
 						color="secondary"
 						// onChange={handleChange}
 						onChange={handleCustomSettings}
-						// displayEmpty
-						// className={classes.selectEmpty}
 						inputProps={{
 							name: input.name,
 							id: input.name,
